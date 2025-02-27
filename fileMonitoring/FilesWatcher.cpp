@@ -48,3 +48,16 @@ void FilesWatcher::checkFiles()
         }
     }
 }
+
+void FilesWatcher::setFiles(const QStringList &files)
+{
+    m_files.clear();
+
+    for(const auto &filePath : files) {
+        FileInfo fiObj(filePath);
+        QFileInfo check(filePath);
+        fiObj.setExists(check.exists());
+        fiObj.setSize(check.exists() ? static_cast<unsigned int>(check.size()) : 0);
+        m_files.push_back(fiObj);
+    }
+}

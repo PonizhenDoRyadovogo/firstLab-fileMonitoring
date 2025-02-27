@@ -11,6 +11,7 @@ class FilesWatcher : public QObject
 public:
     explicit FilesWatcher(const QStringList &files, FileMonitor *monitor, QObject *parent = nullptr);
     void checkFiles();
+    void setFiles(const QStringList &files);
 signals:
     void fileExistsAndNotEmpty(const FileInfo &fileInfo);
     void fileExistsAndChanged(const FileInfo &fileInfo);
