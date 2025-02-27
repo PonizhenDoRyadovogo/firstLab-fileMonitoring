@@ -9,7 +9,7 @@ CONFIG += c++17 cmdline
 SOURCES += \
         FileInfo.cpp \
         FileMonitor.cpp \
-        FileWatcher.cpp \
+        FilesWatcher.cpp \
         main.cpp
 
 # Default rules for deployment.
@@ -20,4 +20,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     FileInfo.h \
     FileMonitor.h \
-    FileWatcher.h
+    FilesWatcher.h
