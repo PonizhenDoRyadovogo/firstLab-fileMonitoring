@@ -1,6 +1,6 @@
 #include "FileWatcher.h"
 
-FileWatcher::FileWatcher(QObject *parent)
+FileWatcher::FileWatcher(const QStringList &files, QObject *parent)
     : QObject{parent}
 {
 
