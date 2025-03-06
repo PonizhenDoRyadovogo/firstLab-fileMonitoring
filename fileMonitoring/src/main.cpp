@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    IFileSource *source = new FileFileSource("cache.txt");
+    IFileSource *source = new ConsoleFileSource();
     IFileMonitor *monitor = new ConsoleFileMonitor();
 
     FilesWatcher watcher(source, monitor);

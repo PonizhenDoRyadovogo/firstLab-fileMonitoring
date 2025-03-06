@@ -53,3 +53,18 @@ bool FileFileSource::isUpdated()
 
     return false;
 }
+
+QStringList ConsoleFileSource::getFiles()
+{
+    QStringList result;
+    QTextStream in(stdin);
+    qDebug() << "Enter files (one in line, empty line for break):";
+
+    while(true) {
+        QString line = in.readLine().trimmed();
+        if(line.isEmpty()) break;
+        result.push_back(line);
+    }
+
+    return result;
+}

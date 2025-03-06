@@ -25,4 +25,9 @@ private:
     QDateTime m_lastModified;
 };
 
+class ConsoleFileSource : public IFileSource
+{
+    QStringList getFiles() override;
+};
+
 #endif // IFILESOURCE_H
