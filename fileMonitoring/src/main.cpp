@@ -17,14 +17,15 @@ int main(int argc, char *argv[])
 
     QString path = a.applicationDirPath() + "/cache.txt";
 
-    IFileSource *source = new FileFileSource(path);
-    IFileMonitor *monitor = new ConsoleFileMonitor();
+    FileFileSource source(path);
+    ConsoleFileMonitor monitor;
 
-    FilesWatcher &watcher = FilesWatcher::instance(source, monitor);
+    FilesWatcher &watcher = FilesWatcher::instance(&source, &monitor);
 
     while(true) {
         watcher.checkFiles();
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+
     return 0;
 }
