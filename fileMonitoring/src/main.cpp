@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
     IFileSource *source = new FileFileSource(path);
     IFileMonitor *monitor = new ConsoleFileMonitor();
 
-    FilesWatcher watcher(source, monitor);
+    FilesWatcher &watcher = FilesWatcher::instance(source, monitor);
 
     while(true) {
         watcher.checkFiles();
