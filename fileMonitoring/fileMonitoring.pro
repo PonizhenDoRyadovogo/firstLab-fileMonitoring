@@ -12,6 +12,7 @@ SOURCES += \
         src/FileInfo.cpp \
         src/FilesWatcher.cpp \
         src/IFileMonitor.cpp \
+        src/IFileSource.cpp \
         src/main.cpp
 
 # Default rules for deployment.
@@ -22,4 +23,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     headers/FileInfo.h \
     headers/FilesWatcher.h \
-    headers/IFileMonitor.h
+    headers/IFileMonitor.h \
+    headers/IFileSource.h

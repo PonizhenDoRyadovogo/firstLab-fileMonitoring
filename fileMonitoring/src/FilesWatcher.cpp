@@ -2,25 +2,22 @@
 
 #include "FilesWatcher.h"
 
-FilesWatcher::FilesWatcher(const QStringList &files, IFileMonitor *monitor, QObject *parent)
-    : QObject{parent}
+FilesWatcher::FilesWatcher(IFileSource *fileSource, IFileMonitor *monitor, QObject *parent)
+    : QObject{parent}, m_fileSource(fileSource)
 {
-    for(const auto &filePath: files)
-    {
-        FileInfo fiObj(filePath);
-        QFileInfo check(filePath);
-        fiObj.setExists(check.exists());
-        fiObj.setSize(check.exists() ? static_cast<unsigned int>(check.size()) : 0);
-        m_files.push_back(fiObj);
-    }
-
     connect(this, &FilesWatcher::fileNotExist, monitor, &IFileMonitor::onFileNotExisted);
     connect(this, &FilesWatcher::fileExistsAndNotEmpty, monitor, &IFileMonitor::onFileExistedAndNotEmpty);
     connect(this, &FilesWatcher::fileExistsAndChanged, monitor, &IFileMonitor::onFileExistsAndChanged);
+
+    reloadFiles();
 }
 
 void FilesWatcher::checkFiles()
 {
+    if(m_fileSource->canUpdate() && m_fileSource->isUpdated()) {
+        reloadFiles();
+    }
+
     for(auto &fileInfo : m_files) {
         QFileInfo realFi(fileInfo.getPath());
         bool currentExists = realFi.exists();
@@ -49,15 +46,15 @@ void FilesWatcher::checkFiles()
     }
 }
 
-void FilesWatcher::setFiles(const QStringList &files)
+void FilesWatcher::reloadFiles()
 {
+    QStringList files = m_fileSource->getFiles();
     m_files.clear();
-
-    for(const auto &filePath : files) {
+    for(const auto &filePath: files) {
         FileInfo fiObj(filePath);
         QFileInfo check(filePath);
         fiObj.setExists(check.exists());
-        fiObj.setSize(check.exists() ? static_cast<unsigned int>(check.size()) : 0);
+        fiObj.setSize(static_cast<unsigned int>(check.size()));
         m_files.push_back(fiObj);
     }
 }

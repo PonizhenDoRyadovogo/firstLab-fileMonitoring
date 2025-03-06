@@ -4,19 +4,21 @@
 #include <QObject>
 
 #include "IFileMonitor.h"
+#include "IFileSource.h"
 
 class FilesWatcher : public QObject
 {
     Q_OBJECT
 public:
-    explicit FilesWatcher(const QStringList &files, IFileMonitor *monitor, QObject *parent = nullptr);
+    explicit FilesWatcher(IFileSource *fileSource, IFileMonitor *monitor, QObject *parent = nullptr);
     void checkFiles();
-    void setFiles(const QStringList &files);
+    void reloadFiles();
 signals:
     void fileExistsAndNotEmpty(const FileInfo &fileInfo);
     void fileExistsAndChanged(const FileInfo &fileInfo);
     void fileNotExist(const QString &filePath);
 private:
+    IFileSource *m_fileSource;
     QVector<FileInfo> m_files;
 };
 
