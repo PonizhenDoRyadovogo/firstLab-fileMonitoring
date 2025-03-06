@@ -10,8 +10,8 @@ INCLUDEPATH += $$PWD/headers
 
 SOURCES += \
         src/FileInfo.cpp \
-        src/FileMonitor.cpp \
         src/FilesWatcher.cpp \
+        src/IFileMonitor.cpp \
         src/main.cpp
 
 # Default rules for deployment.
@@ -21,5 +21,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     headers/FileInfo.h \
-    headers/FileMonitor.h \
-    headers/FilesWatcher.h
+    headers/FilesWatcher.h \
+    headers/IFileMonitor.h

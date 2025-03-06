@@ -46,8 +46,7 @@ int main(int argc, char *argv[])
     QFileInfo cacheInfo(pathCache);
     QDateTime oldModified = cacheInfo.lastModified();
     IFileMonitor *consoleMonitor = new ConsoleFileMonitor();
-    FileMonitor *monitor = new FileMonitor(consoleMonitor);
-    FilesWatcher watcher(oldList, monitor);
+    FilesWatcher watcher(oldList, consoleMonitor);
 
     while(true) {
         QFileInfo currentInfo(pathCache);

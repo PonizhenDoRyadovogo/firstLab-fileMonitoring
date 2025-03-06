@@ -3,13 +3,13 @@
 
 #include <QObject>
 
-#include "FileMonitor.h"
+#include "IFileMonitor.h"
 
 class FilesWatcher : public QObject
 {
     Q_OBJECT
 public:
-    explicit FilesWatcher(const QStringList &files, FileMonitor *monitor, QObject *parent = nullptr);
+    explicit FilesWatcher(const QStringList &files, IFileMonitor *monitor, QObject *parent = nullptr);
     void checkFiles();
     void setFiles(const QStringList &files);
 signals:

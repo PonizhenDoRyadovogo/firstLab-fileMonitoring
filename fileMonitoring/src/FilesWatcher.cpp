@@ -2,7 +2,7 @@
 
 #include "FilesWatcher.h"
 
-FilesWatcher::FilesWatcher(const QStringList &files, FileMonitor *monitor, QObject *parent)
+FilesWatcher::FilesWatcher(const QStringList &files, IFileMonitor *monitor, QObject *parent)
     : QObject{parent}
 {
     for(const auto &filePath: files)
@@ -14,9 +14,9 @@ FilesWatcher::FilesWatcher(const QStringList &files, FileMonitor *monitor, QObje
         m_files.push_back(fiObj);
     }
 
-    connect(this, &FilesWatcher::fileNotExist, monitor, &FileMonitor::onFileNotExisted);
-    connect(this, &FilesWatcher::fileExistsAndNotEmpty, monitor, &FileMonitor::onFileExistedAndNotEmpty);
-    connect(this, &FilesWatcher::fileExistsAndChanged, monitor, &FileMonitor::onFileExistsAndChanged);
+    connect(this, &FilesWatcher::fileNotExist, monitor, &IFileMonitor::onFileNotExisted);
+    connect(this, &FilesWatcher::fileExistsAndNotEmpty, monitor, &IFileMonitor::onFileExistedAndNotEmpty);
+    connect(this, &FilesWatcher::fileExistsAndChanged, monitor, &IFileMonitor::onFileExistsAndChanged);
 }
 
 void FilesWatcher::checkFiles()
