@@ -15,7 +15,9 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    IFileSource *source = new FileFileSource("cache.txt");
+    QString path = a.applicationDirPath() + "/cache.txt";
+
+    IFileSource *source = new FileFileSource(path);
     IFileMonitor *monitor = new ConsoleFileMonitor();
 
     FilesWatcher watcher(source, monitor);
