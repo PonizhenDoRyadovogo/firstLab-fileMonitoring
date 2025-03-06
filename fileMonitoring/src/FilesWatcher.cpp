@@ -14,7 +14,8 @@ FilesWatcher::FilesWatcher(IFileSource *fileSource, IFileMonitor *monitor, QObje
 
 void FilesWatcher::checkFiles()
 {
-    if(m_fileSource->canUpdate() && m_fileSource->isUpdated()) {
+    auto *updatableSource = dynamic_cast<IUpdatableFileSource*>(m_fileSource);
+    if(updatableSource && updatableSource->isUpdated()) {
         reloadFiles();
     }
 

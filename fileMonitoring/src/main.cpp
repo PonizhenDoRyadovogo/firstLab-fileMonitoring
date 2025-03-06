@@ -15,14 +15,14 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    IFileSource *source = new ConsoleFileSource();
+    IFileSource *source = new FileFileSource("cache.txt");
     IFileMonitor *monitor = new ConsoleFileMonitor();
 
     FilesWatcher watcher(source, monitor);
 
     while(true) {
         watcher.checkFiles();
-        std::this_thread::sleep_for(std::chrono::milliseconds(300));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
     return 0;
 }

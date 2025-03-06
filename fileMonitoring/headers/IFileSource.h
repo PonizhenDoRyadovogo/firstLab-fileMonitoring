@@ -9,11 +9,16 @@ class IFileSource
 public:
     virtual ~IFileSource() = default;
     virtual QStringList getFiles() = 0;
-    virtual bool canUpdate() {return false;}
-    virtual bool isUpdated() {return false;}
 };
 
-class FileFileSource : public IFileSource
+class IUpdatableFileSource : public IFileSource
+{
+public:
+    virtual bool canUpdate() = 0;
+    virtual bool isUpdated() = 0;
+};
+
+class FileFileSource : public IUpdatableFileSource
 {
 public:
     FileFileSource(const QString &filePath);
