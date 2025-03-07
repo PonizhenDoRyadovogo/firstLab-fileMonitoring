@@ -14,6 +14,7 @@ FilesWatcher::FilesWatcher(IFileSource *fileSource, IFileMonitor *monitor, QObje
 
 void FilesWatcher::checkFiles()
 {
+    static bool firstIteration = true;
     auto *updatableSource = dynamic_cast<IUpdatableFileSource*>(m_fileSource);
     if(updatableSource && updatableSource->isUpdated()) {
         reloadFiles();
@@ -26,9 +27,12 @@ void FilesWatcher::checkFiles()
 
         if(!currentExists) {
             if(fileInfo.isExists()) {
+                emit fileNotExist(fileInfo);
                 fileInfo.setExists(false);
                 fileInfo.setSize(0);
-                emit fileNotExist(fileInfo.getPath());
+            }
+            else {
+                emit fileNotExist(fileInfo);
             }
         } else {
             if(!fileInfo.isExists()) {
@@ -39,8 +43,6 @@ void FilesWatcher::checkFiles()
                 if(currentSize != fileInfo.getSize()) {
                     fileInfo.setSize(currentSize);
                     emit fileExistsAndChanged(fileInfo);
-                } else {
-                    emit fileExistsAndNotEmpty(fileInfo);
                 }
             }
         }

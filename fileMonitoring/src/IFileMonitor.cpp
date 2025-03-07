@@ -12,7 +12,12 @@ void ConsoleFileMonitor::onFileExistsAndChanged(const FileInfo &fileInfo)
     qDebug() <<"File " << fileInfo.getPath() << " changed, size: " << fileInfo.getSize();
 }
 
-void ConsoleFileMonitor::onFileNotExisted(const QString &filePath)
+void ConsoleFileMonitor::onFileNotExisted(const FileInfo &fileInfo)
 {
-    qDebug() << "File " << filePath << " deleted";
+    if(fileInfo.isExists()) {
+        qDebug() << "File " << fileInfo.getPath() << " deleted";
+    }
+    else {
+        qDebug() << "File " << fileInfo.getPath() << "not exist";
+    }
 }
