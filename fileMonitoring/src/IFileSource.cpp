@@ -32,7 +32,7 @@ QStringList FileFileSource::getFiles()
         }
     }
     file.close();
-
+    result.removeDuplicates();
     return result;
 }
 
