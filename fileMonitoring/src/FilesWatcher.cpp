@@ -18,6 +18,7 @@ void FilesWatcher::checkFiles()
     auto *updatableSource = dynamic_cast<IUpdatableFileSource*>(m_fileSource);
     if(updatableSource && updatableSource->isUpdated()) {
         reloadFiles();
+        firstIteration = true;
     }
 
     for(auto &fileInfo : m_files) {
