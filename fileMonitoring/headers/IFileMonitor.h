@@ -14,7 +14,7 @@ public:
 public slots:
     virtual void onFileExistedAndNotEmpty(const FileInfo &fileInfo) = 0;
     virtual void onFileExistsAndChanged(const FileInfo &fileInfo) = 0;
-    virtual void onFileNotExisted(const QString &filePath) = 0;
+    virtual void onFileNotExisted(const FileInfo &fileInfo) = 0;
 };
 
 class ConsoleFileMonitor : public IFileMonitor
@@ -25,7 +25,7 @@ public:
 public slots:
     void onFileExistedAndNotEmpty(const FileInfo &fileInfo) override;
     void onFileExistsAndChanged(const FileInfo &fileInfo) override;
-    void onFileNotExisted(const QString &filePath) override;
+    void onFileNotExisted(const FileInfo &fileInfo) override;
 };
 
 #endif // IFILEMONITOR_H

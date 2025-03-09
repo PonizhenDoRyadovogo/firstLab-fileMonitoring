@@ -14,9 +14,11 @@ FilesWatcher::FilesWatcher(IFileSource *fileSource, IFileMonitor *monitor, QObje
 
 void FilesWatcher::checkFiles()
 {
+    static bool firstIteration = true;
     auto *updatableSource = dynamic_cast<IUpdatableFileSource*>(m_fileSource);
     if(updatableSource && updatableSource->isUpdated()) {
         reloadFiles();
+        firstIteration = true;
     }
 
     for(auto &fileInfo : m_files) {
@@ -24,27 +26,33 @@ void FilesWatcher::checkFiles()
         bool currentExists = realFi.exists();
         unsigned int currentSize = static_cast<unsigned int>(realFi.size());
 
-        if(!currentExists) {
-            if(fileInfo.isExists()) {
-                fileInfo.setExists(false);
-                fileInfo.setSize(0);
-                emit fileNotExist(fileInfo.getPath());
-            }
-        } else {
-            if(!fileInfo.isExists()) {
-                fileInfo.setExists(true);
-                fileInfo.setSize(currentSize);
+        if(firstIteration) {
+            fileInfo.setExists(currentExists);
+            fileInfo.setSize(currentSize);
+
+            if(currentExists) {
                 emit fileExistsAndNotEmpty(fileInfo);
             } else {
-                if(currentSize != fileInfo.getSize()) {
+                emit fileNotExist(fileInfo);
+            }
+        } else {
+            if(!currentExists && fileInfo.isExists()) {
+                emit fileNotExist(fileInfo);
+                fileInfo.setExists(false);
+                fileInfo.setSize(0);
+            } else if (currentExists){
+                if(!fileInfo.isExists()) {
+                    fileInfo.setExists(true);
+                    fileInfo.setSize(currentSize);
+                    emit fileExistsAndNotEmpty(fileInfo);
+                } else if(currentSize != fileInfo.getSize()) {
                     fileInfo.setSize(currentSize);
                     emit fileExistsAndChanged(fileInfo);
-                } else {
-                    emit fileExistsAndNotEmpty(fileInfo);
                 }
             }
         }
     }
+    firstIteration = false;
 }
 
 void FilesWatcher::reloadFiles()

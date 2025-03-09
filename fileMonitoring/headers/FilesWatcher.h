@@ -24,7 +24,7 @@ private:
 signals:
     void fileExistsAndNotEmpty(const FileInfo &fileInfo);
     void fileExistsAndChanged(const FileInfo &fileInfo);
-    void fileNotExist(const QString &filePath);
+    void fileNotExist(const FileInfo &filePath);
 private:
     IFileSource *m_fileSource;
     QVector<FileInfo> m_files;
