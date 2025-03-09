@@ -25,28 +25,33 @@ void FilesWatcher::checkFiles()
         bool currentExists = realFi.exists();
         unsigned int currentSize = static_cast<unsigned int>(realFi.size());
 
-        if(!currentExists) {
-            if(fileInfo.isExists()) {
-                emit fileNotExist(fileInfo);
-                fileInfo.setExists(false);
-                fileInfo.setSize(0);
-            }
-            else {
+        if(firstIteration) {
+            fileInfo.setExists(currentExists);
+            fileInfo.setSize(currentSize);
+
+            if(currentExists) {
+                emit fileExistsAndNotEmpty(fileInfo);
+            } else {
                 emit fileNotExist(fileInfo);
             }
         } else {
-            if(!fileInfo.isExists()) {
-                fileInfo.setExists(true);
-                fileInfo.setSize(currentSize);
-                emit fileExistsAndNotEmpty(fileInfo);
-            } else {
-                if(currentSize != fileInfo.getSize()) {
+            if(!currentExists && fileInfo.isExists()) {
+                emit fileNotExist(fileInfo);
+                fileInfo.setExists(false);
+                fileInfo.setSize(0);
+            } else if (currentExists){
+                if(!fileInfo.isExists()) {
+                    fileInfo.setExists(true);
+                    fileInfo.setSize(currentSize);
+                    emit fileExistsAndNotEmpty(fileInfo);
+                } else if(currentSize != fileInfo.getSize()) {
                     fileInfo.setSize(currentSize);
                     emit fileExistsAndChanged(fileInfo);
                 }
             }
         }
     }
+    firstIteration = false;
 }
 
 void FilesWatcher::reloadFiles()
